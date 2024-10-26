@@ -1,5 +1,5 @@
 import os
-import git
+import random
 import datetime
 from git import Repo
 
@@ -15,7 +15,7 @@ if repo.bare:
 # Create a commit with a specific message and backdate it
 def create_backdated_commit(message, date):
     # Change the date format
-    date_str = date.strftime("%Y-%m-%dT%H-%M-%S")
+    date_str = date.strftime("%Y-%m-%dT%H:%M:%S")
     dummy_file_path = os.path.join(repo_path, "dummy.txt")
     
     # Modify the dummy file by appending or overwriting content
@@ -27,14 +27,17 @@ def create_backdated_commit(message, date):
     commit_command = f'git commit --date="{date_str}" -m "{message}"'
     os.system(f'cd {repo_path} && {commit_command}')
 
-
-# Function to create multiple backdated commits
+# Function to create multiple randomly dated commits
 def create_multiple_commits(num_commits):
-    today = datetime.datetime.now()
+    start_date = datetime.datetime(2024, 1, 1)
+    end_date = datetime.datetime.now() - datetime.timedelta(days=1)  # yesterday
+    date_range_days = (end_date - start_date).days
+
     for i in range(num_commits):
-        days_ago = i % 365
-        commit_date = today - datetime.timedelta(days=days_ago)
-        create_backdated_commit(f"Backdated commit {i + 1}", commit_date)
+        # Pick a random date within the range
+        random_days = random.randint(0, date_range_days)
+        commit_date = start_date + datetime.timedelta(days=random_days)
+        create_backdated_commit(f"Random commit {i + 1}", commit_date)
 
 # Number of backdated commits you want to create
 num_commits = 10  # Set to a lower number for testing
@@ -42,4 +45,4 @@ num_commits = 10  # Set to a lower number for testing
 # Create the commits
 create_multiple_commits(num_commits)
 
-print(f"{num_commits} backdated commits have been created.")
+print(f"{num_commits} random-dated commits have been created.")
