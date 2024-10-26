@@ -40,7 +40,7 @@ def create_multiple_commits(num_commits):
         create_backdated_commit(f"Random commit {i + 1}", commit_date)
 
 # Number of backdated commits you want to create
-num_commits = 10  # Set to a lower number for testing
+num_commits = 500  # Set to a lower number for testing
 
 # Create the commits
 create_multiple_commits(num_commits)
